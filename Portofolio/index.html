@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raditya Ibnu Rasyad | Portfolio wEBSITE</title>
+    <meta name="description" content="Personal Portfolio Website built with Visual Studio Code to showcase my projects and experiences." />
+    <style>
+        :root {
+            --bg: #050816;
+            --bg2: #09142d;
+            --card: rgba(255,255,255,0.07);
+            --stroke: rgba(255,255,255,0.12);
+            --text: #eef4ff;
+            --muted: rgba(238,244,255,0.72);
+            --primary: #6ea8ff;
+            --secondary: #8b5cf6;
+            --accent: #2dd4bf;
+            --shadow: 0 30px 80px rgba(0,0,0,0.35);
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: Inter, Arial, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(110,168,255,0.16), transparent 30%),
+                radial-gradient(circle at top right, rgba(139,92,246,0.14), transparent 28%),
+                linear-gradient(160deg, var(--bg), var(--bg2));
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+            pointer-events: none;
+            z-index: -5;
+        }
+
+        .blob {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: 0.24;
+            z-index: -4;
+            animation: drift 18s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .blob.one { top: 10%; left: -8%; background: var(--primary); }
+        .blob.two { bottom: 8%; right: -10%; background: var(--secondary); animation-delay: -6s; }
+
+        @keyframes drift {
+            0%, 100% { transform: translate3d(0,0,0) scale(1); }
+            50% { transform: translate3d(40px,-30px,0) scale(1.08); }
+        }
+
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -3;
+            overflow: hidden;
+        }
+
+        .cursor, .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text);
+            mix-blend-mode: difference;
+        }
+
+        .cursor-ring {
+            width: 42px;
+            height: 42px;
+            border: 1px solid rgba(255,255,255,0.35);
+            border-radius: 50%;
+            transition: width 0.2s, height 0.2s, border-color 0.2s, transform 0.2s;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 12px 18px;
+            background: rgba(10,16,32,0.66);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--stroke);
+            border-radius: 999px;
+            box-shadow: var(--shadow);
+            width: min(96%, 980px);
+            overflow-x: auto;
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 10px;
+            list-style: none;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-list a {
+            display: inline-block;
+            padding: 10px 16px;
+            color: var(--muted);
+            text-decoration: none;
+            border-radius: 999px;
+            transition: 0.3s var(--ease);
+            font-weight: 600;
+        }
+
+        .nav-list a:hover, .nav-list a.active {
+            color: var(--text);
+            background: rgba(255,255,255,0.08);
+            transform: translateY(-1px);
+        }
+
+        section {
+            position: relative;
+            min-height: 100vh;
+            padding: 120px 7% 80px;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+        }
+
+        section.active-section {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-frame {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.9fr;
+            gap: 40px;
+            align-items: center;
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border: 1px solid var(--stroke);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            color: var(--muted);
+            margin-bottom: 22px;
+            box-shadow: var(--shadow);
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            box-shadow: 0 0 14px rgba(45,212,191,0.7);
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6.5rem);
+            line-height: 0.95;
+            margin-bottom: 18px;
+            letter-spacing: -0.04em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #b7d4ff 28%, var(--primary) 55%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .typing {
+            display: inline-block;
+            min-height: 1.4em;
+            border-right: 3px solid var(--accent);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .hero p, .section-subtitle, .about-card p, .project-back p, .experience-card p {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .hero p {
+            max-width: 650px;
+            font-size: 1.08rem;
+            margin-bottom: 28px;
+        }
+
+        .cta-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 22px;
+            border-radius: 999px;
+            border: 1px solid var(--stroke);
+            color: var(--text);
+            text-decoration: none;
+            background: rgba(255,255,255,0.05);
+            transition: 0.3s var(--ease);
+            font-weight: 700;
+            box-shadow: var(--shadow);
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, rgba(110,168,255,0.95), rgba(139,92,246,0.95));
+            border-color: transparent;
+        }
+
+        .btn:hover { transform: translateY(-3px) scale(1.01); }
+
+        .hero-card {
+            position: relative;
+            min-height: 560px;
+            border-radius: 32px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+            border: 1px solid var(--stroke);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            animation: floatCard 6s ease-in-out infinite;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-14px); }
+        }
+
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            inset: -40%;
+            background: conic-gradient(from 180deg, transparent, rgba(110,168,255,0.28), transparent, rgba(139,92,246,0.24), transparent);
+            animation: spin 12s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-card-inner {
+            position: absolute;
+            inset: 16px;
+            border-radius: 26px;
+            background:
+                radial-gradient(circle at top, rgba(255,255,255,0.15), transparent 35%),
+                linear-gradient(160deg, rgba(9,14,30,0.96), rgba(12,20,44,0.86));
+            border: 1px solid rgba(255,255,255,0.08);
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding: 26px;
+        }
+
+        .profile-stack { width: 100%; display: grid; gap: 18px; }
+
+        .profile-photo {
+            width: 100%;
+            height: 340px;
+            border-radius: 24px;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)),
+                url("MDP_0230.JPG") center/cover;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+        }
+
+        .mini-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .stat {
+            padding: 14px 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+        }
+        .stat strong { display: block; font-size: 1.2rem; margin-bottom: 4px; }
+
+        .section-title {
+            max-width: 1200px;
+            margin: 0 auto 34px;
+            font-size: clamp(2rem, 4vw, 3.6rem);
+            letter-spacing: -0.03em;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            max-width: 900px;
+            margin: 0 auto 36px;
+            text-align: center;
+        }
+
+        .about-wrap, .contact-wrap, .experience-wrap { max-width: 1200px; margin: 0 auto; }
+
+        .glass {
+            background: var(--card);
+            border: 1px solid var(--stroke);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+        }
+
+        .about-grid, .experience-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .about-card, .skill-card, .project-card, .experience-card, .form, .map {
+            transition: 0.35s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card:hover, .experience-card:hover { transform: translateY(-6px); }
+
+        .about-card, .experience-card { padding: 28px; }
+
+        .chips, .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .chip {
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text);
+            font-size: 0.92rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-top: 18px;
+        }
+
+        .skill-card { padding: 22px; min-height: 210px; }
+        .skill-icon { font-size: 2rem; margin-bottom: 12px; }
+        .skill-list { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }
+        .skill-list span {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.9rem;
+        }
+
+        .progress {
+            margin-top: 16px;
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            width: var(--w);
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 999px;
+            transform-origin: left;
+            animation: grow 1.8s ease forwards;
+        }
+
+        @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+        .projects-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .project-card {
+            min-height: 440px;
+            padding: 0;
+            perspective: 1200px;
+        }
+
+        .flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 440px;
+            transform-style: preserve-3d;
+            transition: transform 0.95s var(--ease);
+        }
+
+        .project-card:hover .flip-inner { transform: rotateY(180deg); }
+
+        .flip-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 28px;
+            overflow: hidden;
+        }
+
+        .flip-front {
+            background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: saturate(1.08) contrast(1.04);
+            transform: scale(1.05);
+            transition: transform 0.6s var(--ease);
+        }
+
+        .project-card:hover .project-image { transform: scale(1.12); }
+
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.74)),
+                radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 40%);
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            padding: 22px;
+        }
+
+        .project-title { font-size: 1.5rem; margin-bottom: 8px; }
+        .project-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.12);
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+
+        .flip-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(180deg, rgba(110,168,255,0.16), rgba(139,92,246,0.16));
+            border: 1px solid rgba(255,255,255,0.10);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .project-back h3 { font-size: 1.4rem; margin-bottom: 10px; }
+        .project-back ul {
+            margin: 14px 0 18px 18px;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .project-links a {
+            padding: 10px 14px;
+            border-radius: 999px;
+            text-decoration: none;
+            color: var(--text);
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 24px;
+        }
+
+        .form, .map { padding: 28px; }
+
+        .form input, .form textarea {
+            width: 100%;
+            margin-bottom: 14px;
+            padding: 16px 18px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.10);
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+            outline: none;
+        }
+
+        .form textarea { min-height: 150px; resize: vertical; }
+
+        .contact-links {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .contact-links a, .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 18px;
+            border-radius: 18px;
+            text-decoration: none;
+            color: var(--text);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(26px) scale(0.99);
+            transition: 0.9s var(--ease);
+        }
+
+        .reveal.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .basic-pop { animation: pop 0.8s ease both; }
+        @keyframes pop { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+
+        .footer {
+            text-align: center;
+            padding: 30px 7% 50px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 1100px) {
+            .hero, .about-grid, .experience-grid, .projects-grid, .contact-grid { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .hero-card { max-width: 520px; margin: 0 auto; }
+        }
+
+        @media (max-width: 768px) {
+            .navbar { width: calc(100% - 24px); top: 12px; padding: 10px 12px; }
+            .nav-list a { padding: 9px 12px; font-size: 0.92rem; }
+            section { padding: 106px 5% 70px; }
+            .mini-stats { grid-template-columns: 1fr; }
+            .cursor, .cursor-ring { display: none; }
+            .project-card:hover .flip-inner { transform: none; }
+            .project-card { min-height: 400px; }
+            .flip-inner { min-height: 400px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="blob one"></div>
+    <div class="blob two"></div>
+    <div class="particles" id="particles"></div>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a class="active" href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="active-section">
+        <div class="hero section-frame">
+            <div class="reveal basic-pop">
+                <div class="eyebrow"> Portfolio Website • South Jakarta • 2026</div>
+                <h1><span class="gradient-text">Radhitya Ibnu Rasyad</span></h1>
+                <p><span class="typing" id="typing"></span></p>
+                <p>
+                   Saya membangun website portofolio digital yang modern dan menarik dengan fokus pada desain visual, layout yang rapi, serta pengalaman pengguna yang nyaman.
+                </p>
+                <div class="cta-group">
+                    <a class="btn primary" href="#projects">Lihat Project</a>
+                    <a class="btn" href="#contact">Hubungi Saya</a>
+                </div>
+            </div>
+
+            <div class="hero-card reveal basic-pop">
+                <div class="hero-card-inner">
+                    <div class="profile-stack">
+                        <div class="profile-photo"></div>
+                        <div class="mini-stats">
+                            <div class="stat"><strong>20+</strong>Project</div>
+                            <div class="stat"><strong>4+</strong>Month Experience</div>
+                            <div class="stat"><strong>16+</strong>Happy Client</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+ <section id="about">
+    <div class="about-wrap section-frame">
+        <h2 class="section-title reveal">About</h2>
+        <p class="section-subtitle reveal">
+           Tentang saya dan pendidikan terakhir.
+        </p>
+        
+        <div class="about-grid">
+            <div class="glass about-card reveal">
+                <h3>Siapa Saya?</h3>
+                <p>
+                    <strong>Radhitya Ibnu Rasyad</strong> adalah siswa SMK Grafika Desa Putera Jurusan Desain Grafika yang memiliki minat pada desain visual dan branding. Saya senang mengeksplorasi layout, tipografi, dan komposisi warna untuk menciptakan desain yang menarik, rapi, dan komunikatif. Saya terus belajar mengembangkan kemampuan agar dapat berkontribusi di industri kreatif.
+                </p>
+            </div>
+
+            <div class="glass about-card reveal">
+                <h3>Pendidikan</h3>
+                <p>
+                    <strong>SMK Grafika Desa Putera</strong><br>
+                    Saya menempuh pendidikan di SMK Grafika Desa Putera jurusan Desain Grafika. Selama belajar, saya mempelajari dasar-dasar desain visual, teknik layout, pre-press, serta proses produksi media cetak dan digital. Pengalaman ini membangun pemahaman saya dalam menciptakan desain yang fungsional dan sesuai kebutuhan pengguna.
+                </p>
+               <div class="chips">
+                    <span class="chip">Layout</span>
+                    <span class="chip">Visual Branding</span>
+                    <span class="chip">Typography</span>
+                    <span class="chip">Gestalt Principles</span>
+                    <span class="chip">Color Theory</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+ <style>
+    /* Styling dasar tetap sama agar konsisten */
+    #skills .skills-grid-custom {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 25px;
+        margin-top: 40px;
+    }
+
+    #skills .skill-item-box {
+        position: relative;
+        padding: 25px;
+        border-radius: 16px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+    }
+
+    #skills .skill-item-box:hover {
+        transform: translateY(-10px);
+        border-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    #skills .skill-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    #skills .skill-icon-wrap {
+        width: 55px;
+        height: 55px;
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: 0.3s;
+    }
+
+    #skills .skill-icon-wrap img {
+        width: 40px; 
+        height: 40px;
+        object-fit: contain;
+    }
+
+    #skills .skill-text-main h4 {
+        margin: 0;
+        font-size: 1.1rem;
+        color: #fff;
+    }
+
+    /* Warna sub-text mengikuti warna utama masing-masing aplikasi */
+    #skills .skill-text-main p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: var(--skill-color); /* Menggunakan variabel warna */
+        font-weight: 600;
+    }
+
+    #skills .skill-desc {
+        font-size: 0.85rem;
+        color: #aaa;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    /* Progress Bar dengan Warna Dinamis */
+    #skills .progress-container {
+        background: rgba(255, 255, 255, 0.05);
+        height: 6px;
+        border-radius: 10px;
+        width: 100%;
+    }
+
+    #skills .progress-bar {
+        height: 100%;
+        /* Menggunakan variabel gradasi warna */
+        background: linear-gradient(90deg, var(--skill-color), var(--skill-color-light));
+        border-radius: 10px;
+        width: var(--w);
+        transition: width 1.5s ease-in-out;
+        box-shadow: 0 0 10px var(--skill-glow); /* Memberikan efek cahaya halus */
+    }
+
+    #skills .percentage-label {
+        display: block;
+        text-align: right;
+        font-size: 0.75rem;
+        color: #888;
+        margin-top: 8px;
+    }
+
+    @media (max-width: 992px) {
+        #skills .skills-grid-custom { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+        #skills .skills-grid-custom { grid-template-columns: 1fr; }
+    }
+</style>
+
+<section id="skills">
+    <div class="about-wrap section-frame">
+        <h2 class="section-title reveal">Skills</h2>
+        <p class="section-subtitle reveal">
+            Penguasaan software kreatif atau alat desain dengan standar industri yang saya kuasai.
+        </p>
+
+        <div class="skills-grid-custom">
+            <div class="glass skill-item-box reveal" 
+                 style="--skill-color: #31A8FF; --skill-color-light: #004691; --skill-glow: rgba(49, 168, 255, 0.3);">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">
+                        <img src="Adobe_Photoshop_CC_icon.svg.png" alt="Photoshop">
+                    </div>
+                    <div class="skill-text-main">
+                        <h4>Photoshop</h4>
+                        <p>Image Editing</p>
+                    </div>
+                </div>
+                <p class="skill-desc">Manipulasi foto, digital imaging, dan pembuatan desain mockup.</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="--w: 90%;"></div>
+                </div>
+                <span class="percentage-label">90% Mastery</span>
+            </div>
+
+            <div class="glass skill-item-box reveal" 
+                 style="--skill-color: #FF9A00; --skill-color-light: #422006; --skill-glow: rgba(255, 154, 0, 0.3);">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">
+                        <img src="Adobe_Illustrator_CC_icon.svg.png" alt="Illustrator">
+                    </div>
+                    <div class="skill-text-main">
+                        <h4>illustrator</h4>
+                        <p>Vector Design</p>
+                    </div>
+                </div>
+                <p class="skill-desc">Branding identitas, pembuatan logo, dan aset grafik vektor.</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="--w: 85%;"></div>
+                </div>
+                <span class="percentage-label">85% Mastery</span>
+            </div>
+
+            <div class="glass skill-item-box reveal" 
+                 style="--skill-color: #FF3366; --skill-color-light: #47011F; --skill-glow: rgba(255, 51, 102, 0.3);">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">
+                        <img src="Adobe_InDesign_CC_icon.svg.png" alt="InDesign">
+                    </div>
+                    <div class="skill-text-main">
+                        <h4>InDesign</h4>
+                        <p>Layouting</p>
+                    </div>
+                </div>
+                <p class="skill-desc">Manajemen tata letak untuk publikasi digital maupun cetak dengan struktur yang rapi.</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="--w: 80%;"></div>
+                </div>
+                <span class="percentage-label">80% Mastery</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="experience">
+        <div class="experience-wrap section-frame">
+            <h2 class="section-title reveal">Experience</h2>
+            <p class="section-subtitle reveal">
+                Bagian ini menampilkan pengalaman PKL saya dan sertifikat serta nilai yang didapatkan.
+            </p>
+
+            <div class="experience-grid">
+                <div class="glass experience-card reveal">
+                    <h3>PKL - PT Dasa Prima Buring</h3>
+                    <p>
+                        Saya telah menjalani Praktik Kerja Lapangan (PKL) di PT Dasa Prima Buring yang berlokasi di Margonda, Depok. Selama kurang lebih 4 bulan 1 minggu yaitu pada tanggal 23 Juni 2025 - 31 Oktober 2025.
+
+Selama PKL, saya ditempatkan di tiga divisi, yaitu Customer Service, Printing, dan Merchandise.
+Di bagian Customer Service, saya belajar melayani pelanggan, memahami kebutuhan mereka, dan menggunakan Software Adobe Photoshop.
+Di bagian Printing, saya mempelajari proses cetak dan mengoperasikan mesin digital printing seperti Canon C10000VP.
+Di bagian Merchandise, saya mengoperasikan mesin seperti iECHO PK dan Heat Press Vakum 3D.
+                    </p>
+                    <div class="tags">
+                        <span class="chip">Customer Service</span>
+                        <span class="chip">Printing</span>
+                        <span class="chip">Merchandise</span>
+                    </div>
+                </div>
+               <!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #050816;
+      color: #eef4ff;
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 28px;
+      padding: 24px;
+      backdrop-filter: blur(16px);
+      max-width: 1100px;
+      margin: 40px auto;
+    }
+
+    .experience-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.6rem;
+    }
+
+    .experience-card p {
+      color: rgba(238,244,255,0.78);
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .certificate-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .certificate-frame {
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      text-align: center;
+    }
+
+    .certificate-frame img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 14px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .certificate-frame span {
+      display: inline-block;
+      color: #eef4ff;
+      font-size: 0.95rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 768px) {
+      .certificate-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .certificate-frame img {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glass experience-card reveal">
+    <h3>Sertifikat & Nilai PKL</h3>
+    <p>
+      Melalui pengalaman PKL ini, saya memperoleh keterampilan teknis dan soft skills seperti komunikasi, ketelitian, serta kemampuan bekerja dalam tim.
+    </p>
+
+    <div class="certificate-grid">
+      <div class="certificate-frame">
+        <img src="1777455079907.jpg" alt="Sertifikat PKL">
+        <span>Sertifikat PKL</span>
+      </div>
+
+      <div class="certificate-frame">
+        <img src="1777455105211.jpg" alt="Nilai PKL">
+        <span>Nilai PKL</span>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="chip">Communication</span>
+      <span class="chip">Accuracy</span>
+      <span class="chip">Teamwork</span>
+    </div>
+  </div>
+
+</body>
+</html>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="about-wrap section-frame">
+            <h2 class="section-title reveal">Projects</h2>
+            <p class="section-subtitle reveal">
+                Kumpulan proyek pilihan yang menampilkan kemampuan saya dalam mendesain.
+            </p>
+
+            <div class="projects-grid">
+                <article class="project-card reveal">
+                    <div class="flip-inner">
+                        <div class="flip-face flip-front">
+                            <img class="project-image" src="1777440797989 (1).jpg" alt="Project 01">
+                            <div class="project-overlay">
+                                <div class="project-badge">Design Project</div>
+                                <div class="project-title">Banner Bukber</div>
+                                <p>Banner event dengan desain visual elegan dan informatif untuk menarik perhatian audiens.</p>
+                            </div>
+                        </div>
+                        <div class="flip-face flip-back">
+                            <div class="project-back">
+                                <h3>Desain Banner Buka Puasa Bersama</h3>
+                                <p>Desain banner untuk acara buka puasa bersama dengan konsep visual islami yang Simpel dan rapi.</p>
+                                <ul>
+                                    <li>Tools: Adobe Photoshop</li>
+                                    <li>Fokus: Komposisi layout, tipografi, dan warna</li>
+                                    <li>Output: Media promosi event (banner cetak)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card reveal">
+                    <div class="flip-inner">
+                        <div class="flip-face flip-front">
+                            <img class="project-image" src="Kemasan Sereal.jpg" alt="Project 02">
+                            <div class="project-overlay">
+                                <div class="project-badge">Design Project</div>
+                                <div class="project-title">Kemasan Sereal</div>
+                                <p>Desain kemasan produk dengan visual menarik untuk memperkuat identitas brand.</p>
+                            </div>
+                        </div>
+                        <div class="flip-face flip-back">
+                            <div class="project-back">
+                                <h3>Desain Kemasan Sereal</h3>
+                                <p>Desain kemasan sereal dengan tampilan colorful dan menarik perhatian untuk meningkatkan daya tarik produk di pasaran.</p>
+                                <ul>
+                                    <li>Tools: Adobe Photoshop</li>
+                                    <li>Fokus: Visual branding, warna, dan layout produk</li>
+                                    <li>Output: Desain kemasan siap produksi</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card reveal">
+                    <div class="flip-inner">
+                        <div class="flip-face flip-front">
+                            <img class="project-image" src="Kalender Dinding.png" alt="Project 03">
+                            <div class="project-overlay">
+                                <div class="project-badge">Design Project</div>
+                                <div class="project-title">Kalender Dinding</div>
+                                <p>Kalender dengan desain modern, minimalis, dan mudah dibaca oleh audiens.</p>
+                            </div>
+                        </div>
+                        <div class="flip-face flip-back">
+                            <div class="project-back">
+                                <h3>Desain Kalender Dinding</h3>
+                                <p>Desain kalender dinding dengan konsep minimalis dan profesional untuk kebutuhan personal.</p>
+                                <ul>
+                                    <li>Tools: Adobe illustrator</li>
+                                    <li>Fokus: Layout, keterbacaan, dan konsistensi desain</li>
+                                    <li>Output: Desain kalender</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+   <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Raditya - Desain Grafika</title>
+    <style>
+        :root {
+            --primary: #6ea8ff;
+            --text: #ffffff;
+            --muted: rgba(255, 255, 255, 0.6);
+            --glass: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .section-frame {
+            padding: 100px 10%;
+        }
+
+        .section-title { font-size: 2.5rem; margin-bottom: 10px; }
+        .section-subtitle { color: var(--muted); margin-bottom: 40px; }
+
+        /* GLASSMORPHISM STYLE */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 35px;
+            transition: 0.3s;
+        }
+
+        /* ABOUT SECTION STYLE */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .chip {
+            background: rgba(110, 168, 255, 0.1);
+            border: 1px solid rgba(110, 168, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        /* CONTACT SECTION STYLE (DIRAPATKAN) */
+        .contact-grid {
+            display: flex;            /* Menggunakan flex agar bisa dirapatkan */
+            justify-content: center;  /* Merapatkan sisi kiri dan kanan ke tengah */
+            gap: 20px;                /* Jarak antar kolom dipersempit */
+            flex-wrap: wrap;
+        }
+
+        /* Ukuran kartu tetap, tidak berubah */
+        .contact-grid .glass {
+            flex: 1;
+            max-width: 480px;         /* Lebar maksimal kartu tetap */
+            min-width: 320px;
+        }
+
+        .form { display: flex; flex-direction: column; gap: 15px; }
+        .form input, .form textarea {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+        }
+
+        .contact-links { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .contact-links a { color: var(--primary); text-decoration: none; }
+
+        .btn {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 50px;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+        }
+
+        /* REVEAL ANIMATION */
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s; }
+        .reveal.show { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; }
+            .section-frame { padding: 60px 5%; }
+        }
+    </style>
+</head>
+<body>
+    
+    <section id="contact">
+        <div class="contact-wrap section-frame">
+            <h2 class="section-title reveal" style="text-align: center;">Contact</h2>
+            <p class="section-subtitle reveal" style="text-align: center; margin-left: auto; margin-right: auto;">
+                Tersedia untuk diskusi, dan kolaborasi kreatif.
+            </p>
+
+          <div class="contact-grid">
+    <form action="https://formspree.io/f/mnjlerwq" method="POST" class="glass form reveal">
+        <input type="text" name="name" placeholder="Nama Anda" required>
+        <input type="email" name="email" placeholder="Email Anda" required>
+        <textarea name="message" placeholder="Tulis pesan Anda di sini..." rows="4" required></textarea>
+        <button class="btn primary" type="submit">Kirim Pesan</button>
+    </form>
+
+                <div class="glass map reveal">
+                    <h3>Let's Connect!</h3>
+                    <div class="contact-links">
+                        <a href="mailto:radityarasyad85@gmail.com">Email: radityarasyad85@gmail.com</a>
+                        <a href="https://wa.me/6287865757223">WhatsApp: +62 878-6575-7223</a>
+                        <a href="https://instagram.com/">Instagram: @rasyad_rdy</a>
+                        <div class="contact-item" style="margin-top: 10px;">South Jakarta, Indonesia</div>
+                    </div>
+                    <p style="color: var(--muted); font-size: 0.9rem; margin-top: 20px;">
+                        Saya terbuka untuk diskusi kapan saja.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer">© 2026 Radhitya Ibnu Rasyad — Portfolio Website</div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const cursorRing = document.getElementById('cursorRing');
+        const sections = [...document.querySelectorAll('section')];
+        const navLinks = document.querySelectorAll('.nav-list a');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorRing.style.left = e.clientX + 'px';
+            cursorRing.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, button, .project-card, .skill-card, .experience-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorRing.style.width = '58px';
+                cursorRing.style.height = '58px';
+                cursorRing.style.borderColor = 'rgba(110,168,255,0.55)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorRing.style.width = '42px';
+                cursorRing.style.height = '42px';
+                cursorRing.style.borderColor = 'rgba(255,255,255,0.35)';
+            });
+        });
+
+        function setActiveNav(hash) {
+            navLinks.forEach(x => x.classList.remove('active'));
+            const active = [...navLinks].find(a => a.getAttribute('href') === hash);
+            if (active) active.classList.add('active');
+        }
+
+        function showSectionByScroll() {
+            sections.forEach(sec => {
+                const rect = sec.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.25) {
+                    sec.classList.add('active-section');
+                } else {
+                    sec.classList.remove('active-section');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            const now = window.scrollY;
+            const scrollingDown = now > lastScrollY;
+            lastScrollY = now;
+
+            showSectionByScroll();
+
+            const activeId = sections.find(sec => {
+                const r = sec.getBoundingClientRect();
+                return r.top <= window.innerHeight * 0.45 && r.bottom >= window.innerHeight * 0.45;
+            })?.id;
+
+            if (activeId) setActiveNav(`#${activeId}`);
+
+            document.querySelectorAll('.reveal').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.88) el.classList.add('show');
+                if (!scrollingDown && rect.top < window.innerHeight * 0.9) el.classList.add('show');
+            });
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const target = document.querySelector(link.getAttribute('href'));
+                if (!target) return;
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                setActiveNav(link.getAttribute('href'));
+            });
+        });
+
+        const revealEls = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('show');
+            });
+        }, { threshold: 0.12 });
+        revealEls.forEach(el => io.observe(el));
+
+        const texts = [
+            'Graphic Designer berbasis di Jakarta Selatan.',
+            'Membangun identitas visual yang ikonik dan mudah diingat.',
+            'Fokus pada Desain, Fungsi, dan Pengalaman Pengguna.'
+        ];
+        const typing = document.getElementById('typing');
+        let textIndex = 0, charIndex = 0, deleting = false;
+
+        function typeLoop() {
+            const current = texts[textIndex];
+            typing.textContent = current.slice(0, charIndex);
+            if (!deleting) {
+                charIndex++;
+                if (charIndex > current.length) {
+                    deleting = true;
+                    setTimeout(typeLoop, 1200);
+                    return;
+                }
+                setTimeout(typeLoop, 45);
+            } else {
+                charIndex--;
+                if (charIndex < 0) {
+                    deleting = false;
+                    textIndex = (textIndex + 1) % texts.length;
+                    charIndex = 0;
+                }
+                setTimeout(typeLoop, 24);
+            }
+        }
+        typeLoop();
+
+        const particleWrap = document.getElementById('particles');
+        function createParticle() {
+            const p = document.createElement('span');
+            const size = Math.random() * 3 + 2;
+            p.style.position = 'absolute';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = '110vh';
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.borderRadius = '50%';
+            p.style.background = 'rgba(110,168,255,0.75)';
+            p.style.boxShadow = '0 0 12px rgba(110,168,255,0.6)';
+            p.style.animation = `floatUp ${Math.random() * 6 + 5}s linear forwards`;
+            particleWrap.appendChild(p);
+            setTimeout(() => p.remove(), 11000);
+        }
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes floatUp {
+                from { transform: translateY(0) translateX(0); opacity: 0; }
+                10% { opacity: 1; }
+                to { transform: translateY(-130vh) translateX(${Math.random() * 100 - 50}px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        setInterval(createParticle, 280);
+
+        showSectionByScroll();
+        document.getElementById('home').classList.add('active-section');
+    </script>
+</body>
+</html>
